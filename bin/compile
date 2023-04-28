@@ -186,6 +186,8 @@ if [ -n "$BUILDPACK_PRELAUNCH_METEOR" ]; then
   HOME=$METEOR_DIR timeout -s9 60 $METEOR_DIR/.meteor/meteor --settings settings.json || true
 fi
 
+echo "{}" > "$COMPILE_DIR"/node_modules/resolve/test/resolver/malformed_package_json/package.json
+
 # Now on to bundling. Don't put the bundle in $APP_CHECKOUT_DIR during
 # bundling, or it will recurse, trying to bundle up its own bundling.
 
@@ -206,6 +208,10 @@ if [ -e "$COMPILE_DIR"/app/programs/server/package.json ]; then
   $METEOR_NPM install --production
   cd "$APP_SOURCE_DIR"
 fi
+
+echo "{}" > "$COMPILE_DIR"/node_modules/resolve/test/resolver/malformed_package_json/package.json
+
+
 
 #
 # Environment
