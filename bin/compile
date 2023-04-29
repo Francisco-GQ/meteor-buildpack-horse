@@ -100,7 +100,10 @@ fi
 if [ -e "$METEOR_DIR/.meteor/meteor" ]; then
   echo "-----> Existing meteor installation found, using it."
 else
-  echo "-----> Installing meteor"
+  echo "-----> Installing meteor to $METEOR_DIR"
+  ls /tmp/cache
+  cd ~
+  pwd
   curl -sS "https://install.meteor.com/" | HOME="$METEOR_DIR" /bin/sh
 fi
 # Function to execute meteor with proper HOME.
@@ -186,7 +189,9 @@ if [ -n "$BUILDPACK_PRELAUNCH_METEOR" ]; then
   HOME=$METEOR_DIR timeout -s9 60 $METEOR_DIR/.meteor/meteor --settings settings.json || true
 fi
 
-echo "{}" > "$COMPILE_DIR"/node_modules/resolve/test/resolver/malformed_package_json/package.json
+if [ -e "$COMPILE_DIR"/node_modules/resolve/test/resolver/malformed_package_json/package.json ]; then
+  echo "{}" > "$COMPILE_DIR"/node_modules/resolve/test/resolver/malformed_package_json/package.json
+fi
 
 # Now on to bundling. Don't put the bundle in $APP_CHECKOUT_DIR during
 # bundling, or it will recurse, trying to bundle up its own bundling.
@@ -209,7 +214,10 @@ if [ -e "$COMPILE_DIR"/app/programs/server/package.json ]; then
   cd "$APP_SOURCE_DIR"
 fi
 
-echo "{}" > "$COMPILE_DIR"/node_modules/resolve/test/resolver/malformed_package_json/package.json
+
+if [ -e "$COMPILE_DIR"/node_modules/resolve/test/resolver/malformed_package_json/package.json ]; then
+  echo "{}" > "$COMPILE_DIR"/node_modules/resolve/test/resolver/malformed_package_json/package.json
+fi
 
 
 
